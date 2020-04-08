@@ -16,15 +16,20 @@ def main():
             </form>
         """
     else:
-        file = request.files["file"]
-        if file.filename.split(".")[-1]!="csv": 
-            return redirect("/")
+        return redirect(url_for('query'), code=307)
 
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"], file.filename))
-        with open(os.path.join(app.config["UPLOAD_FOLDER"], file.filename), "r") as f:
-            headings = f.readline().split(",")
-            
-        return render_template("index.html", display_data=json.dumps(headings))
+
+@app.route('/query', methods=["GET","POST"])
+def query():
+    file = request.files["file"]
+    if file.filename.split(".")[-1]!="csv": 
+        return redirect("/")
+
+    file.save(os.path.join(app.config["UPLOAD_FOLDER"], file.filename))
+    with open(os.path.join(app.config["UPLOAD_FOLDER"], file.filename), "r") as f:
+        headings = f.readline().split(",")
+        
+    return render_template("index.html", display_data=json.dumps(headings))
 
 
 if __name__ == "__main__":

@@ -1,8 +1,10 @@
 <html>
     <head>
-        <script type="text/javascript" src="/static/index.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='index.js') }}">
+        </script>
     </head>
     <body onload="compose_page()">
+        <a href="{{ url_for('main') }}">Home</a>
         <h2 id="error_banner"></h2>
 
         <div id="data_store" data="{{display_data}}" display="none"></div>

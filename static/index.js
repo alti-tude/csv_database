@@ -235,7 +235,7 @@ function compose_page(){
     console.log(form.innerHTML);
     document.body.appendChild(form);
     
-    //aggregte form
+    //aggregate form
     form = document.createElement("form");
     form.setAttribute("id", "agg_form_display");
     form.style.display="none";
