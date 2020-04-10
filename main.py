@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
 import json, os
 
-app = Flask(__name__, template_folder="../views", static_folder="../static")
-app.config["UPLOAD_FOLDER"] = "../uploads"
+import models
+
+app = Flask(__name__, template_folder="views", static_folder="static")
+app.config["UPLOAD_FOLDER"] = "uploads"
 
 @app.route("/", methods=["GET","POST"])
 def main():
@@ -25,8 +27,12 @@ def query():
     if file.filename.split(".")[-1]!="csv": 
         return redirect("/")
 
-    file.save(os.path.join(app.config["UPLOAD_FOLDER"], file.filename))
-    with open(os.path.join(app.config["UPLOAD_FOLDER"], file.filename), "r") as f:
+    filename = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
+    file.save(filename)
+    
+    models.loadFile(filename)
+
+    with open(filename, "r") as f:
         headings = f.readline().split(",")
         
     return render_template("index.html", display_data=json.dumps(headings))
